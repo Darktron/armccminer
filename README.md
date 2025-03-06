@@ -17,6 +17,7 @@ yes | pkg install libjansson build-essential clang binutils git wget -y
 cp /data/data/com.termux/files/usr/include/linux/sysctl.h /data/data/com.termux/files/usr/include/sys
 git clone https://github.com/Darktron/armccminer.git
 cd armccminer
+wget -O ~/armccminer/verus/sse2neon/sse2neon.h https://raw.githubusercontent.com/DLTcollab/sse2neon/refs/heads/master/sse2neon.h
 chmod +x build.sh configure.sh autogen.sh start.sh
 ```
 
