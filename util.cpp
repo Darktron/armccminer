@@ -158,35 +158,30 @@ extern int gpu_threads;
 // Also, auto hide LOG_DEBUG if --debug (-D) is not used
 void gpulog(int prio, int thr_id, const char *fmt, ...)
 {
-    char _ALIGN(128) line[256];
-    int len;
-    va_list ap;
+	char _ALIGN(128) pfmt[128];
+	char _ALIGN(128) line[256];
+	int len, dev_id = device_map[thr_id % MAX_GPUS];
+	va_list ap;
 
-    if (prio == LOG_DEBUG && !opt_debug)
-        return;
+	if (prio == LOG_DEBUG && !opt_debug)
+		return;
 
-    // Prefix the log message with thread ID
-    len = snprintf(line, sizeof(line), "CPU Thread #%d: Hashrate >", thr_id);
 
-    if (len < 0 || len >= (int)sizeof(line)) {
-        fprintf(stderr, "%s OOM!\n", __func__);
-        return;
-    }
+	len = snprintf(pfmt, 128, "CPU/Thread #%d: Hashrate > %s", thr_id, fmt);
 
-    va_start(ap, fmt);
+	pfmt[sizeof(pfmt)-1]='\0';
 
-    // Append formatted content
-    if (fmt) { 
-        vsnprintf(line + len, sizeof(line) - len, fmt, ap);
-    }
+	va_start(ap, fmt);
 
-    va_end(ap);
+	if (len && vsnprintf(line, sizeof(line), pfmt, ap)) {
+		line[sizeof(line)-1]='\0';
+		applog(prio, "%s", line);
+	} else {
+		fprintf(stderr, "%s OOM!\n", __func__);
+	}
 
-    line[sizeof(line) - 1] = '\0';
-
-    applog(prio, "%s", line);
+	va_end(ap);
 }
-
 /* Get default config.json path (system specific) */
 void get_defconfig_path(char *out, size_t bufsize, char *argv0)
 {
