@@ -1,3 +1,3 @@
 [submodule "verus/sse2neon"]
 	path = verus/sse2neon
-	url = https://github.com/DLTcollab/sse2neon/sse2neon.h
+	url = https://github.com/DLTcollab/sse2neon/blob/master/sse2neon.h
