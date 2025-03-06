@@ -103,7 +103,7 @@ fi
 
 if test x$have_arm = xtrue
 then
-  ARCH_FLAGS="-march=armv7 -mfpu=neon -DARM"
+  ARCH_FLAGS="-march=armv7-a -mfpu=neon -DARM"
 else
 if test x$have_arm64 = xtrue
 then
